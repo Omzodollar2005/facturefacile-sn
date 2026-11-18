@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FactureFacile SN</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f6fa;color:#172b40}
+header{background:#102c45;color:white;padding:24px 18px}
+header h1{margin:0;font-size:23px}
+header p{color:#c9d9e6;font-size:13px}
+main{padding:18px;max-width:650px;margin:auto}
+h2{font-size:19px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:white;padding:17px;border-radius:13px;box-shadow:0 2px 9px #0000000b}
+.card small{color:#64748b}
+.card strong{display:block;font-size:22px;margin-top:9px}
+nav{display:flex;gap:9px;flex-wrap:wrap;margin:22px 0}
+button{border:0;border-radius:9px;padding:12px;background:#087f69;color:white;font-weight:bold}
+nav button{background:#e0eae9;color:#175b51}
+section{background:white;padding:18px;border-radius:13px;margin-top:15px}
+input{width:100%;padding:13px;margin:7px 0 13px;border:1px solid #d5dce5;border-radius:8px}
+.action{width:100%}
+#result{margin-top:12px;padding:12px;background:#e6f5ef;border-radius:8px}
+footer{text-align:center;color:#718096;padding:25px;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>FactureFacile SN</h1>
+<p>Votre gestion, en toute simplicité.</p>
+</header>
+<main>
+<h2>Tableau de bord</h2>
+<div class="cards">
+<div class="card"><small>Clients enregistrés</small><strong id="clients">0</strong></div>
+<div class="card"><small>Factures créées</small><strong id="invoices">0</strong></div>
+<div class="card"><small>Total des factures</small><strong id="total">0 FCFA</strong></div>
+<div class="card"><small>Statut</small><strong>Prêt</strong></div>
+</div>
+<nav>
+<button onclick="show('client')">+ Client</button>
+<button onclick="show('invoice')">+ Facture</button>
+</nav>
+<section id="client">
+<h2>Ajouter un client</h2>
+<label>Nom du client</label>
+<input id="clientName" placeholder="Ex : Amadou Ndiaye">
+<label>Téléphone</label>
+<input id="clientPhone" placeholder="77 000 00 00" inputmode="tel">
+<button class="action" onclick="addClient()">Enregistrer le client</button>
+<div id="clientResult"></div>
+</section>
+<section id="invoice">
+<h2>Créer une facture</h2>
+<label>Nom du client</label>
+<input id="invoiceName" placeholder="Nom du client">
+<label>Description</label>
+<input id="description" placeholder="Ex : Travaux de peinture">
+<label>Montant (FCFA)</label>
+<input id="amount" type="number" min="1" placeholder="50000">
+<button class="action" onclick="addInvoice()">Créer la facture</button>
+<div id="invoiceResult"></div>
+</section>
+<footer>FactureFacile SN · Version de démonstration</footer>
+</main>
+<script>
+let clients=0,invoices=0,total=0;
+function money(n){return n.toLocaleString('fr-FR')+' FCFA'}
+function show(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+function addClient(){
+let name=document.getElementById('clientName').value.trim();
+let phone=document.getElementById('clientPhone').value.trim();
+if(!name||!phone){alert('Remplis le nom et le téléphone.');return}
+clients++;
+document.getElementById('clients').textContent=clients;
+document.getElementById('clientResult').textContent='Client ajouté : '+name;
+document.getElementById('clientName').value='';
+document.getElementById('clientPhone').value='';
+}
+function addInvoice(){
+let name=document.getElementById('invoiceName').value.trim();
+let desc=document.getElementById('description').value.trim();
+let amount=Number(document.getElementById('amount').value);
+if(!name||!desc||!Number.isFinite(amount)||amount<=0){alert('Vérifie les informations de la facture.');return}
+invoices++;total+=amount;
+document.getElementById('invoices').textContent=invoices;
+document.getElementById('total').textContent=money(total);
+document.getElementById('invoiceResult').textContent='Facture créée pour '+name+' : '+desc+' — '+money(amount);
+document.getElementById('invoiceName').value='';
+document.getElementById('description').value='';
+document.getElementById('amount').value='';
+}
+</script>
+</body>
+</html>
